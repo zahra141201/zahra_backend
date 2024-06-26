@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "az",
+    "database": "FOOD_development",
+    "host": "localhost",
+    "dialect": "postgres",
+    "seederStorage": "sequelize"
+  },
+  "test": {
+    "username": "postgres",
+    "password": "az",
+    "database": "FOOD_test",
+    "host": "localhost",
+    "dialect": "postgres",
+    "seederStorage": "sequelize"
+  },
+  "production": {
+    "username": "postgres",
+    "password": "az",
+    "database": "FOOD",
+    "host": "localhost",
+    "dialect": "postgres",
+    "seederStorage": "sequelize"
+  }
+}
