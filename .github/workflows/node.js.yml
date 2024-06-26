@@ -29,3 +29,13 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
+
+  deploy:
+    runs-on : ubuntu-latest
+
+    steps :
+      - name: Deploy to Render
+        uses : johnbeynon/render-deploy-action@v0.0.8
+        with : 
+          service-id: ${{ secrets.MY_RENDER_SERVICE_ID }}
+          api-key: ${{ secrets.MY_RENDER_API_KEY }}
