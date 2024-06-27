@@ -41,7 +41,8 @@ router.get('/:email', async (ctx) => {
     console.log('Recherche d\'un utilisateur avec l\'adresse e-mail :', email);
 
     // Ajouter des logs pour vérifier ce qui est renvoyé par la base de données
-    const user = await User.findOne({ where: { email } });
+    const user = await User.findOne({ where: { email : email } });
+
     console.log('Résultat de la requête de la base de données :', user);
 
     if (!user) {
