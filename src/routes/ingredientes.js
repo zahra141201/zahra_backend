@@ -1,14 +1,15 @@
 // src/routes/movies.js
 const Router = require('koa-router');
+const { Ingredient } = require('../models'); // Assurez-vous d'importer correctement votre modèle Ingredient
+
 const router = new Router();
-const { Ingredient } = require('../models');
 
 router.post('/', async (ctx) => {
   try {
     console.log('Solicitud recibida para la creación de un ingrediente');
     console.log('Datos de la solicitud:', ctx.request.body);
 
-    const ingredient = await ctx.orm.Ingredient.create(ctx.request.body);
+    const ingredient = await Ingredient.create(ctx.request.body);
     console.log('Ingrediente creado con éxito:', ingredient);
 
     ctx.status = 201;
@@ -22,7 +23,7 @@ router.post('/', async (ctx) => {
 
 router.delete('/:id', async (ctx) => {
   try {
-    const ingredient = await ctx.orm.Ingredient.findByPk(ctx.params.id);
+    const ingredient = await Ingredient.findByPk(ctx.params.id);
 
     if (ingredient) {
       await ingredient.destroy();
@@ -41,7 +42,7 @@ router.delete('/:id', async (ctx) => {
 // GET para obtener todos los ingredientes
 router.get('/', async (ctx) => {
   try {
-    const ingredients = await ctx.orm.Ingredient.findAll(); // Consulta todos los ingredientes
+    const ingredients = await Ingredient.findAll(); // Consulta todos los ingredientes
 
     ctx.status = 200; // OK
     ctx.body = ingredients;
@@ -57,7 +58,7 @@ router.patch('/:id', async (ctx) => {
     const { id } = ctx.params;
     const { body } = ctx.request;
 
-    const ingredient = await ctx.orm.Ingredient.findByPk(id);
+    const ingredient = await Ingredient.findByPk(id);
 
     if (!ingredient) {
       ctx.status = 404; // No encontrado
@@ -76,14 +77,13 @@ router.patch('/:id', async (ctx) => {
   }
 });
 
-
 // GET para obtener ingredientes por email
 router.get('/user/:email', async (ctx) => {
   const email = ctx.params.email;
 
   try {
     // Consultar ingredientes por email
-    const ingredients = await ctx.orm.Ingredient.findAll({
+    const ingredients = await Ingredient.findAll({
       where: {
         owner: email
       }
@@ -104,7 +104,7 @@ router.get('/:id', async (ctx) => {
 
   try {
     // Consultar ingrediente por ID
-    const ingredient = await ctx.orm.Ingredient.findByPk(id);
+    const ingredient = await Ingredient.findByPk(id);
 
     if (!ingredient) {
       ctx.status = 404; // No encontrado
@@ -120,8 +120,5 @@ router.get('/:id', async (ctx) => {
     ctx.body = { error: 'Ocurrió un error al obtener el ingrediente por ID' };
   }
 });
-
-module.exports = router;
-
 
 module.exports = router;
