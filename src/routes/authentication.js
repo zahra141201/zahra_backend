@@ -11,6 +11,7 @@ const router = new Router();
 router.post("/signup", async (ctx) => {
     const authInfo = ctx.request.body;
     try {
+        ctx.body = `The user has email '${authInfo.email}'`
         let user = await User.findOne({ where: { email: authInfo.email } });
         if (user) {
             ctx.body = `The user with email '${authInfo.email}' already exists`;
