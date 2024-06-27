@@ -1,25 +1,27 @@
 const Router = require('koa-router');
-var jwt = require('jsonwebtoken');
-const dotenv = require('dotenv');
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const dotenv = require('dotenv');
+const { User } = require('../db/models'); // Assurez-vous d'importer correctement votre modèle User
 
 dotenv.config();
 
-
 const router = new Router();
 
-router.post("authentication.signup", "/signup", async(ctx) => {
+router.post("/signup", async (ctx) => {
     const authInfo = ctx.request.body;
-    let user = await ctx.orm.User.findOne({ where: { email: authInfo.email } })
-    if (user) {
-        ctx.body = `The user by email '${authInfo.email}' already exists`;
-        ctx.status = 400;
-        return;
-    }
     try {
+        let user = await User.findOne({ where: { email: authInfo.email } });
+        if (user) {
+            ctx.body = `The user with email '${authInfo.email}' already exists`;
+            ctx.status = 400;
+            return;
+        }
+
         const saltRounds = 10;
         const hashPassword = await bcrypt.hash(authInfo.password, saltRounds);
-        user = await ctx.orm.User.create({
+
+        user = await User.create({
             email: authInfo.email,
             password: hashPassword,
             name: authInfo.name,
@@ -28,74 +30,61 @@ router.post("authentication.signup", "/signup", async(ctx) => {
             address: authInfo.address,
             description: authInfo.description,
             is_admin: authInfo.is_admin
-        })
-    } catch (error) {
-        ctx.body = error;
-        ctx.status = 400;
-        return;
-    }
-    ctx.body = {
-        email: user.email,
-        name: user.name
-    };
-    ctx.status = 201;
-})
+        });
 
-
-
-router.post("authentication.login", "/login", async(ctx) => {
-    let user;
-    const authInfo = ctx.request.body;
-    try {
-        user = await ctx.orm.User.findOne({ where: { email: authInfo.email } })
-    }
-    
-    catch(error) {
-        ctx.body = error;
-        ctx.status = 400;
-        return;
-    }
-
-    if (!user) {
-        ctx.body = `The user by email '${authInfo.email}' was not found`;
-        ctx.status = 400;
-        return;
-    }
-    const validPassword = await bcrypt.compare(authInfo.password, user.password);
-
-    if (validPassword) {
         ctx.body = {
             email: user.email,
             name: user.name
         };
-        ctx.status = 200;
-
-    } else {
-        ctx.body = "Incorrect password";
-        ctx.status = 400;
-        return;
+        ctx.status = 201;
+    } catch (error) {
+        console.error('Error creating user:', error);
+        ctx.body = error.message || 'An error occurred while processing your request';
+        ctx.status = 500;
     }
+});
 
-    /// Creamos el JWT. Si quisieras agregar distintos scopes, como por ejemplo
-    /// "admin", podrían hacer un llamado a la base de datos y cambiar el payload
-    /// en base a eso
+router.post("/login", async (ctx) => {
+    const authInfo = ctx.request.body;
+    try {
+        let user = await User.findOne({ where: { email: authInfo.email } });
+        if (!user) {
+            ctx.body = `The user with email '${authInfo.email}' was not found`;
+            ctx.status = 404; // Utilisez le code approprié pour l'utilisateur non trouvé
+            return;
+        }
 
-    const expirationSeconds = 1 * 60 * 60 * 24;
-    const JWT_PRIVATE_KEY = process.env.JWT_SECRET;
-    
+        const validPassword = await bcrypt.compare(authInfo.password, user.password);
+        if (validPassword) {
+            const expirationSeconds = 1 * 60 * 60 * 24;
+            const JWT_PRIVATE_KEY = process.env.JWT_SECRET;
 
-    var token = jwt.sign(
-        { scope: ['user'] },
-        JWT_PRIVATE_KEY,
-        { subject: user.id.toString() },
-        { expiresIn: expirationSeconds }
-    );
+            const token = jwt.sign(
+                { scope: ['user'] },
+                JWT_PRIVATE_KEY,
+                { subject: user.id.toString() },
+                { expiresIn: expirationSeconds }
+            );
 
-    ctx.body = {
-        "access_token": token,
-        "token_type": "Bearer",
-        "expires_in": expirationSeconds
-    };
-    ctx.status = 200;
-})
-module.exports = router
+            ctx.body = {
+                access_token: token,
+                token_type: 'Bearer',
+                expires_in: expirationSeconds,
+                user: {
+                    email: user.email,
+                    name: user.name
+                }
+            };
+            ctx.status = 200;
+        } else {
+            ctx.body = 'Incorrect password';
+            ctx.status = 401; // Utilisez le code approprié pour un accès non autorisé
+        }
+    } catch (error) {
+        console.error('Error logging in:', error);
+        ctx.body = error.message || 'An error occurred while processing your request';
+        ctx.status = 500;
+    }
+});
+
+module.exports = router;
