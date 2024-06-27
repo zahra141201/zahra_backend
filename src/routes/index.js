@@ -15,6 +15,8 @@ dotenv.config();
 const router = new Router();
 router.use('/valorations', valorations.routes());
 router.use('/ingredientes', ingredients.routes());
+router.use('/requests', requests.routes());
+
 
 
 router.use(authRoutes.routes());
