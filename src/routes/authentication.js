@@ -11,6 +11,7 @@ const router = new Router();
 router.post("/signup", async (ctx) => {
     const authInfo = ctx.request.body;
     try {
+        ctx.body= 'coucou'
         ctx.body = `The user has email '${authInfo.email}'`
         let user = await User.findOne({ where: { email: authInfo.email } });
         if (user) {
