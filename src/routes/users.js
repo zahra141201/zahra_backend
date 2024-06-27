@@ -4,22 +4,22 @@ const router = new Router();
 
 
 
-// router.post('/', async (ctx) => {
-//   try {
-//     console.log('Solicitud POST recibida en /users');
-//     console.log('Datos recibidos:', ctx.request.body);
+ router.post('/', async (ctx) => {
+   try {
+     console.log('Solicitud POST recibida en /users');
+     console.log('Datos recibidos:', ctx.request.body);
 
-//     const user = await ctx.orm.User.create(ctx.request.body);
-//     console.log('Usuario creado:', user);
+     const user = await ctx.orm.User.create(ctx.request.body);
+     console.log('Usuario creado:', user);
 
-//     ctx.body = user;
-//     ctx.status = 201;
-//   } catch (error) {
-//     console.error('Error al crear usuario:', error);
-//     ctx.body = error;
-//     ctx.status = 400;
-//   }
-// });
+     ctx.body = user;
+     ctx.status = 201;
+   } catch (error) {
+     console.error('Error al crear usuario:', error);
+     ctx.body = error;
+     ctx.status = 400;
+   }
+ });
 
 router.get('/', async (ctx) => {
   try {
