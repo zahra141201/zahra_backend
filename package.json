@@ -8,7 +8,8 @@
   "license": "MIT",
   "private": null,
   "scripts": {
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js"
   },
   "dependencies": {
     "@koa/cors": "^5.0.0",
