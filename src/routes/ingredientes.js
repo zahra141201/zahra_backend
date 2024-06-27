@@ -1,7 +1,7 @@
 // src/routes/movies.js
 const Router = require('koa-router');
 const router = new Router();
-
+const { Ingredient } = require('../models');
 
 router.post('/', async (ctx) => {
   try {
