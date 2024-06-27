@@ -10,6 +10,7 @@ const router = new Router();
 
 router.post("/signup", async (ctx) => {
     const authInfo = ctx.request.body;
+    console.log('Received authInfo:', authInfo);
     try {
         ctx.body= 'coucou'
         ctx.body = `The user has email '${authInfo.email}'`
