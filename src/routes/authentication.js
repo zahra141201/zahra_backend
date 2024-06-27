@@ -2,7 +2,7 @@ const Router = require('koa-router');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const dotenv = require('dotenv');
-const { User } = require('../db/models'); // Assurez-vous d'importer correctement votre modèle User
+const { User } = require('../models'); // Assurez-vous d'importer correctement votre modèle User
 
 dotenv.config();
 
