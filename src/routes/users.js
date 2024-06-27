@@ -34,14 +34,13 @@ router.get('/', async (ctx) => {
   }
 });
 
-// Route pour obtenir un utilisateur par email
 router.get('/:email', async (ctx) => {
   try {
     const { email } = ctx.params;
     console.log('Recherche d\'un utilisateur avec l\'adresse e-mail :', email);
 
     // Ajouter des logs pour vérifier ce qui est renvoyé par la base de données
-    const user = await User.findOne({ where: { email : email } });
+    const user = await User.findOne({ where: { email } });
 
     console.log('Résultat de la requête de la base de données :', user);
 
