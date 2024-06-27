@@ -6,6 +6,7 @@ const authRoutes = require('./authentication');
 const dotenv = require('dotenv');
 const jwtMiddleware = require('koa-jwt')
 const scopeProtectedRoutes = require('./scopeExample.js');
+const requests = require('./requests')
 
 
 
