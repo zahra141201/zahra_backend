@@ -38,19 +38,20 @@ router.get('/ingredient/:id_ingrediente', async (ctx) => {
   }
 });
 
-router.patch('/ingredient/:id_ingrediente', async (ctx) => {
+router.patch('/requests/ingredient/:id_ingrediente', async (ctx) => {
   try {
-    console.log('coucou')
     const { id_ingrediente } = ctx.params;
-    const { status } = ctx.request.body;
-    const request = await Request.findAll({
-      where: { id_ingrediente },
-    
+    const { id, pick_up_date, comment, state, made_by } = ctx.request.body;
+
+    const request = await Request.findOne({
+      where: { id_ingrediente, id }
     });
-    console.log('Recherche d\'un utilisateur avec l\'adresse e-mail :', request);
 
     if (request) {
-      request.state = status;
+      request.pick_up_date = pick_up_date;
+      request.comment = comment;
+      request.state = state;
+      request.made_by = made_by;
       await request.save();
       ctx.status = 200;
       ctx.body = request;
