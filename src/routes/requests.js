@@ -38,6 +38,30 @@ router.get('/ingredient/:id_ingrediente', async (ctx) => {
   }
 });
 
+router.patch('/requests/ingredient/:id_ingrediente', async (ctx) => {
+  try {
+    const { id_ingrediente } = ctx.params;
+    const { status } = ctx.request.body;
+    const request = await Request.findOne({
+      where: { id_ingrediente }
+    });
+
+    if (request) {
+      request.state = status;
+      await request.save();
+      ctx.status = 200;
+      ctx.body = request;
+    } else {
+      ctx.status = 404;
+      ctx.body = { error: 'Request not found' };
+    }
+  } catch (error) {
+    console.error('Error updating request status:', error);
+    ctx.status = 500;
+    ctx.body = { error: 'An error occurred while updating the request status' };
+  }
+});
+
 // Route pour obtenir les requêtes selon un utilisateur
 router.get('/user/:made_by', async (ctx) => {
   try {
