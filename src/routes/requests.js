@@ -40,11 +40,14 @@ router.get('/ingredient/:id_ingrediente', async (ctx) => {
 
 router.patch('/requests/ingredient/:id_ingrediente', async (ctx) => {
   try {
+    console.log('coucou')
     const { id_ingrediente } = ctx.params;
     const { status } = ctx.request.body;
     const request = await Request.findAll({
-      where: { id_ingrediente }
+      where: { id_ingrediente },
+    
     });
+    console.log('Recherche d\'un utilisateur avec l\'adresse e-mail :', request);
 
     if (request) {
       request.state = status;
