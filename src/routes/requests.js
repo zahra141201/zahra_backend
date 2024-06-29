@@ -42,7 +42,7 @@ router.patch('/requests/ingredient/:id_ingrediente', async (ctx) => {
   try {
     const { id_ingrediente } = ctx.params;
     const { status } = ctx.request.body;
-    const request = await Request.findOne({
+    const request = await Request.findAll({
       where: { id_ingrediente }
     });
 
