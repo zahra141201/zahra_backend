@@ -38,7 +38,7 @@ router.get('/ingredient/:id_ingrediente', async (ctx) => {
   }
 });
 
-router.patch('/requests/ingredient/:id_ingrediente', async (ctx) => {
+router.patch('/ingredient/:id_ingrediente', async (ctx) => {
   try {
     const { id_ingrediente } = ctx.params;
     const { id, pick_up_date, comment, state, made_by } = ctx.request.body;
