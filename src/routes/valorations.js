@@ -35,24 +35,25 @@ router.post('/', async (ctx) => {
 
 
 
-
-router.get('/:email_user', async (req, res) => {
-  const { email_user } = req.params;
+router.get('/:email_user', async (ctx) => {
+  const { email_user } = ctx.params;
   console.log('Recherche d\'un utilisateur avec l\'adresse e-mail :', email_user);
   try {
-    const valorations = await Valoration.findAll({
+    const valorations = await ctx.orm.Valoration.findAll({
       where: {
-        email_user: email_user // Utilisez 'email_user' ici
+        email_user: email_user
       }
-      
     });
     console.log('Recherche d\'un utilisateur avec l\'adresse e-mail :', valorations);
-    res.status(200).json(valorations);
+    ctx.status = 200;
+    ctx.body = valorations;
   } catch (error) {
     console.error('Error fetching valorations by email_user:', error);
-    res.status(500).json({ error: 'An error occurred while fetching the valorations' });
+    ctx.status = 500;
+    ctx.body = { error: 'An error occurred while fetching the valorations' };
   }
 });
+
 
 
 
