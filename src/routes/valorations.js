@@ -4,16 +4,7 @@ const { Request } = require('../models');
 const router = new Router();
 
 
-router.get('/', async (ctx) => {
-    try {
-        const valorations = await ctx.orm.Valoration.findAll();
-        ctx.status = 200;
-        ctx.body = valorations;
-    } catch (error) {
-        ctx.status = 500;
-        ctx.body = { error: 'Ocurrio un error al buscar las valoraciones'}
-    }
-});
+
 
 
 router.post('/', async (ctx) => {
@@ -116,6 +107,32 @@ router.delete('/user/:made_by/ingredient/:id_ingrediente', async (ctx) => {
   }
 });
 
+
+router.get('/', async (ctx) => {
+  const { email_user, made_by } = ctx.query;
+
+  try {
+    // Vérifier s'il existe une évaluation pour email_user et made_by
+    const existingValoration = await Valoration.findOne({
+      where: {
+        email_user: email_user,
+        made_by: made_by
+      }
+    });
+
+    if (existingValoration) {
+      ctx.status = 200; // OK
+      ctx.body = existingValoration;
+    } else {
+      ctx.status = 404; // Non trouvé
+      ctx.body = { error: 'Aucune évaluation trouvée pour cet utilisateur et cet évaluateur' };
+    }
+  } catch (error) {
+    console.error('Erreur lors de la vérification de l\'existence de l\'évaluation :', error);
+    ctx.status = 500; // Erreur du serveur
+    ctx.body = { error: 'Une erreur s\'est produite lors de la vérification de l\'existence de l\'évaluation' };
+  }
+});
 
 
 
