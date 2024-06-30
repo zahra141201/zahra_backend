@@ -37,7 +37,7 @@ module.exports = router;
 router.get('/:email', async (ctx) => {
   try {
     const { email } = ctx.params;
-    const valorations = await Request.findAll({
+    const valorations = await Valoration.findAll({
       where: { email },
     });
     ctx.status = 200;
@@ -81,7 +81,7 @@ router.patch('/:id', async (req, res) => {
 router.delete('/user/:made_by/ingredient/:id_ingrediente', async (ctx) => {
   try {
     const { made_by, id_ingrediente } = ctx.params;
-    const request = await Request.findOne({
+    const request = await Valoration.findOne({
       where: { made_by, id_ingrediente },
     });
 
