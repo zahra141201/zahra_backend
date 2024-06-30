@@ -121,6 +121,7 @@ router.get('/', async (ctx) => {
     });
 
     if (existingValoration) {
+      console.log('valoration creado con éxito:', existingValoration);
       ctx.status = 200; // OK
       ctx.body = existingValoration;
     } else {
