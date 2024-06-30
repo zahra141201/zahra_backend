@@ -33,21 +33,29 @@ router.post('/', async (ctx) => {
   });
 module.exports = router;
 
-// Route pour obtenir les requêtes selon un utilisateur
-router.get('/:user_email', async (ctx) => {
+
+
+
+router.get('/:email_user', async (req, res) => {
+  const { email_user } = req.params;
+  console.log('Recherche d\'un utilisateur avec l\'adresse e-mail :', email_user);
   try {
-    const { user_email } = ctx.params;
     const valorations = await Valoration.findAll({
-      where: { user_email },
+      where: {
+        email_user: email_user // Utilisez 'email_user' ici
+      }
+      
     });
-    ctx.status = 200;
-    ctx.body = valorations;
+    console.log('Recherche d\'un utilisateur avec l\'adresse e-mail :', valorations);
+    res.status(200).json(valorations);
   } catch (error) {
-    console.error('Error fetching requests by user:', error);
-    ctx.status = 500;
-    ctx.body = { error: 'An error occurred while fetching the requests' };
+    console.error('Error fetching valorations by email_user:', error);
+    res.status(500).json({ error: 'An error occurred while fetching the valorations' });
   }
 });
+
+
+
 
 router.patch('/:id', async (req, res) => {
   const { id } = req.params;
