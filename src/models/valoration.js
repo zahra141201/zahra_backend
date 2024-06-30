@@ -16,7 +16,8 @@ module.exports = (sequelize, DataTypes) => {
   Valoration.init({
     comment: DataTypes.STRING,
     puntuation: DataTypes.INTEGER,
-    email_user: DataTypes.STRING
+    email_user: DataTypes.STRING,
+    made_by: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Valoration',

@@ -18,6 +18,9 @@ module.exports = {
       email_user: {
         type: Sequelize.STRING
       },
+      made_by: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
