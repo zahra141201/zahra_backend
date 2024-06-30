@@ -106,3 +106,30 @@ router.delete('/user/:made_by/ingredient/:id_ingrediente', async (ctx) => {
     ctx.body = { error: 'An error occurred while deleting the request' };
   }
 });
+
+
+// Route pour vérifier les valorations entre deux utilisateurs
+router.get('/check-link', async (ctx) => {
+  const { loggedInEmail, profileEmail } = ctx.query;
+
+  try {
+    const requests = await Request.findAll({
+      where: {
+        made_by: loggedInEmail
+      },
+      include: [{
+        model: Ingredient,
+        where: {
+          owner: profileEmail
+        }
+      }]
+    });
+
+    ctx.status = 200;
+    ctx.body = { hasLink: requests.length > 0 };
+  } catch (error) {
+    console.error('Error checking link:', error);
+    ctx.status = 500;
+    ctx.body = { error: 'An error occurred while checking the link' };
+  }
+});
