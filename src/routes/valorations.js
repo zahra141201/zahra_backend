@@ -133,3 +133,5 @@ router.get('/check-link', async (ctx) => {
     ctx.body = { error: 'An error occurred while checking the link' };
   }
 });
+
+module.exports = router;
