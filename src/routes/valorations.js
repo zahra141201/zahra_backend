@@ -35,22 +35,30 @@ router.post('/', async (ctx) => {
 
 
 
+// GET para obtener valoraciones por email_user
 router.get('/:email_user', async (ctx) => {
   const { email_user } = ctx.params;
-  console.log('Recherche d\'un utilisateur avec l\'adresse e-mail :', email_user);
+
   try {
-    const valorations = await ctx.orm.Valoration.findAll({
+    // Buscar valoraciones por email_user
+    const valorations = await Valoration.findAll({
       where: {
         email_user: email_user
       }
     });
-    console.log('Recherche d\'un utilisateur avec l\'adresse e-mail :', valorations);
-    ctx.status = 200;
+
+    if (valorations.length === 0) {
+      ctx.status = 404; // No encontrado
+      ctx.body = { error: 'No se encontraron valoraciones para este usuario' };
+      return;
+    }
+
+    ctx.status = 200; // OK
     ctx.body = valorations;
   } catch (error) {
-    console.error('Error fetching valorations by email_user:', error);
-    ctx.status = 500;
-    ctx.body = { error: 'An error occurred while fetching the valorations' };
+    console.error('Error al obtener valoraciones por email_user:', error);
+    ctx.status = 500; // Error del servidor
+    ctx.body = { error: 'Ocurrió un error al obtener las valoraciones por email_user' };
   }
 });
 
@@ -109,30 +117,6 @@ router.delete('/user/:made_by/ingredient/:id_ingrediente', async (ctx) => {
 });
 
 
-// Route pour vérifier les valorations entre deux utilisateurs
-router.get('/check-link', async (ctx) => {
-  const { loggedInEmail, profileEmail } = ctx.query;
 
-  try {
-    const requests = await Request.findAll({
-      where: {
-        made_by: loggedInEmail
-      },
-      include: [{
-        model: Ingredient,
-        where: {
-          owner: profileEmail
-        }
-      }]
-    });
-
-    ctx.status = 200;
-    ctx.body = { hasLink: requests.length > 0 };
-  } catch (error) {
-    console.error('Error checking link:', error);
-    ctx.status = 500;
-    ctx.body = { error: 'An error occurred while checking the link' };
-  }
-});
 
 module.exports = router;
