@@ -16,10 +16,12 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       email_user: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        references: { model: 'Users', key: 'email'} ,
       },
       made_by: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        references: { model: 'Users', key: 'email'} ,
       },
       createdAt: {
         allowNull: false,

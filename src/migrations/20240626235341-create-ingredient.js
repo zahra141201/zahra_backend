@@ -28,7 +28,8 @@ module.exports = {
         type: Sequelize.STRING
       },
       owner: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        references: { model: 'Users', key: 'email'} ,
       },
       createdAt: {
         allowNull: false,

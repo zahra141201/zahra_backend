@@ -10,10 +10,12 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       email_cliente: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        references: { model: 'Users', key: 'email'} ,
       },
       id_ingredient: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: { model: 'Ingredients', key: 'id'} ,
       },
       estado: {
         type: Sequelize.BOOLEAN

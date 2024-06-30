@@ -11,6 +11,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.belongsTo(models.User, {
+        foreignKey:'email_user'
+      });
+      this.belongsTo(models.User, {
+        foreignKey:'made_by'
+      });
     }
   }
   Valoration.init({

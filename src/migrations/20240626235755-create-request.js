@@ -19,10 +19,12 @@ module.exports = {
         type: Sequelize.STRING
       },
       made_by: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        references: { model: 'Users', key: 'email'}
       },
       id_ingrediente: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: { model: 'Ingredients', key: 'id'}
       },
       createdAt: {
         allowNull: false,
