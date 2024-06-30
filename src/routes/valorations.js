@@ -1,5 +1,6 @@
 const Router = require('koa-router');
 const { Valoration } = require('../models');
+const { Request } = require('../models');
 const router = new Router();
 
 
