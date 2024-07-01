@@ -57,32 +57,35 @@ router.get('/:email_user', async (ctx) => {
 
 
 
-router.patch('/:id', async (req, res) => {
-  const { id } = req.params;
-  console.log(ctx.request.body)
+router.patch('/:id', async (ctx) => {
+  const { id } = ctx.params;
+  console.log(ctx.request.body); // Utilisez ctx.request.body au lieu de req.body
   const { comment, puntuation, email_user, made_by } = ctx.request.body;
 
   try {
-      // Trouver la valoration par son ID
-      const valoration = await Valoration.findByPk(id);
+    // Trouver la valoration par son ID
+    const valoration = await Valoration.findByPk(id);
 
-      if (!valoration) {
-          return res.status(404).json({ error: 'Valoration not found' });
-      }
+    if (!valoration) {
+      ctx.status = 404;
+      ctx.body = { error: 'Valoration not found' };
+      return;
+    }
 
-      // Mettre à jour les champs de la valoration
-      if (comment !== undefined) valoration.comment = comment;
-      if (puntuation !== undefined) valoration.puntuation = puntuation;
-      if (email_user !== undefined) valoration.email_user = email_user;
-      if (made_by !== undefined) valoration.made_by = made_by;
+    // Mettre à jour les champs de la valoration
+    if (comment !== undefined) valoration.comment = comment;
+    if (puntuation !== undefined) valoration.puntuation = puntuation;
+    if (email_user !== undefined) valoration.email_user = email_user;
+    if (made_by !== undefined) valoration.made_by = made_by;
 
-      // Sauvegarder les changements dans la base de données
-      await valoration.save();
+    // Sauvegarder les changements dans la base de données
+    await valoration.save();
 
-      res.json({ message: 'Valoration updated successfully', valoration });
+    ctx.body = { message: 'Valoration updated successfully', valoration };
   } catch (error) {
-      console.error('Error updating valoration:', error);
-      res.status(500).json({ error: 'An error occurred while updating the valoration' });
+    console.error('Error updating valoration:', error);
+    ctx.status = 500;
+    ctx.body = { error: 'An error occurred while updating the valoration' };
   }
 });
 
