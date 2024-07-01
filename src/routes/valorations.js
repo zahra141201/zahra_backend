@@ -59,8 +59,8 @@ router.get('/:email_user', async (ctx) => {
 
 router.patch('/:id', async (req, res) => {
   const { id } = req.params;
-  console.log(req.body)
-  const { comment, puntuation, email_user, made_by } = req.body;
+  console.log(ctx.request.body)
+  const { comment, puntuation, email_user, made_by } = ctx.request.body;
 
   try {
       // Trouver la valoration par son ID
