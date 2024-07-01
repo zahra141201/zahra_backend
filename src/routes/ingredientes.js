@@ -24,7 +24,7 @@ router.post('/', async (ctx) => {
 router.delete('/:id', async (ctx) => {
   try {
     const ingredient = await Ingredient.findByPk(ctx.params.id);
-
+    console.log(ingredient)
     if (ingredient) {
       await ingredient.destroy();
       ctx.status = 204; // Sin contenido
