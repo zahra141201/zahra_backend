@@ -17,11 +17,15 @@ module.exports = {
       },
       email_user: {
         type: Sequelize.STRING,
-        references: { model: 'Users', key: 'email'} ,
+        references: { model: 'Users', key: 'email' },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       made_by: {
         type: Sequelize.STRING,
-        references: { model: 'Users', key: 'email'} ,
+        references: { model: 'Users', key: 'email' },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       createdAt: {
         allowNull: false,

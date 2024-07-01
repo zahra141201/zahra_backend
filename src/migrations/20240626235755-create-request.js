@@ -20,11 +20,15 @@ module.exports = {
       },
       made_by: {
         type: Sequelize.STRING,
-        references: { model: 'Users', key: 'email'}
+        references: { model: 'Users', key: 'email' },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       id_ingrediente: {
         type: Sequelize.INTEGER,
-        references: { model: 'Ingredients', key: 'id'}
+        references: { model: 'Ingredients', key: 'id' },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       createdAt: {
         allowNull: false,

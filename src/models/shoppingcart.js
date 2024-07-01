@@ -1,24 +1,22 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class ShoppingCart extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
       this.belongsTo(models.User, {
-        foreignKey:'email_cliente'
+        foreignKey: 'email_cliente',
+        onDelete: 'CASCADE', 
+        onUpdate: 'CASCADE',// Supprime les paniers associés lorsque l'utilisateur est supprimé
       });
       this.belongsTo(models.Ingredient, {
-        foreignKey:'id_ingredient'
+        foreignKey: 'id_ingredient',
+        onDelete: 'CASCADE', 
+        onUpdate: 'CASCADE',// Supprime les paniers associés lorsque l'ingrédient est supprimé
       });
     }
   }
+
   ShoppingCart.init({
     email_cliente: DataTypes.STRING,
     id_ingredient: DataTypes.INTEGER,
@@ -27,5 +25,6 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'ShoppingCart',
   });
+
   return ShoppingCart;
 };

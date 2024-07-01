@@ -1,27 +1,27 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Ingredient extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
       this.belongsTo(models.User, {
-        foreignKey:'owner'
+        foreignKey: 'owner',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE', // Supprime les ingrédients associés lorsque l'utilisateur est supprimé
       });
       this.hasMany(models.Request, {
-        foreignKey: 'id_ingrediente'
+        foreignKey: 'id_ingrediente',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE', // Supprime les demandes associées lorsque l'ingrédient est supprimé
       });
       this.hasMany(models.ShoppingCart, {
-        foreignKey: 'id_ingredient'
+        foreignKey: 'id_ingredient',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE', // Supprime les entrées de panier associées lorsque l'ingrédient est supprimé
       });
     }
   }
+
   Ingredient.init({
     name: DataTypes.STRING,
     expiration_date: DataTypes.DATE,
@@ -34,5 +34,6 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Ingredient',
   });
+
   return Ingredient;
 };

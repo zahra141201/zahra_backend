@@ -29,7 +29,10 @@ module.exports = {
       },
       owner: {
         type: Sequelize.STRING,
-        references: { model: 'Users', key: 'email'} ,
+        references: { model: 'Users', key: 'email' },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',  // Ajout de la suppression en cascade
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,
