@@ -90,15 +90,15 @@ router.patch('/:id', async (ctx) => {
 });
 
 // Route pour supprimer une requête selon l'utilisateur et l'ingrédient
-router.delete('/user/:made_by/ingredient/:id_ingrediente', async (ctx) => {
+router.delete('/user/:made_by', async (ctx) => {
   try {
-    const { made_by, id_ingrediente } = ctx.params;
-    const request = await Valoration.findOne({
-      where: { made_by, id_ingrediente },
+    const { made_by } = ctx.params;
+    const valoration = await Valoration.findOne({
+      where: { made_by },
     });
 
-    if (request) {
-      await request.destroy();
+    if (valoration) {
+      await valoration.destroy();
       ctx.status = 204; // No Content
     } else {
       ctx.status = 404;
