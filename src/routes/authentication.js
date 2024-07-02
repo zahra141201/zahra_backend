@@ -77,7 +77,8 @@ router.post("/login", async (ctx) => {
                 expires_in: expirationSeconds,
                 user: {
                     email: user.email,
-                    name: user.name
+                    name: user.name,
+                    is_admin: is_admin
                 }
             };
             ctx.status = 200;
