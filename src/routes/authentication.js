@@ -64,6 +64,7 @@ router.post("/login", async (ctx) => {
 
             const token = jwt.sign(
                 { scope: ['user'] ,
+                is_admin: is_admin,
         
                 },
                 JWT_PRIVATE_KEY,
