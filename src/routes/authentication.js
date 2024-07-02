@@ -63,7 +63,9 @@ router.post("/login", async (ctx) => {
             const JWT_PRIVATE_KEY = process.env.JWT_SECRET;
 
             const token = jwt.sign(
-                { scope: ['user'] },
+                { scope: ['user'] ,
+                isAdmin: user.is_admin
+                },
                 JWT_PRIVATE_KEY,
                 { subject: user.id.toString() },
                 { expiresIn: expirationSeconds }

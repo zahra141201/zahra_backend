@@ -14,7 +14,12 @@
   "dependencies": {
     "@koa/cors": "^5.0.0",
     "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-validator": "^7.1.0",
+    "google-maps-react": "^2.0.6",
+    "jsonwebtoken": "^9.0.2",
     "koa": "^2.15.3",
     "koa-bodyparser": "^4.4.1",
     "koa-jwt": "^4.0.4",
