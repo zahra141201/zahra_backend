@@ -64,7 +64,7 @@ router.post("/login", async (ctx) => {
 
             const token = jwt.sign(
                 { scope: ['user'] ,
-                is_admin: is_admin,
+                is_admin: user.is_admin,
         
                 },
                 JWT_PRIVATE_KEY,
@@ -79,7 +79,7 @@ router.post("/login", async (ctx) => {
                 user: {
                     email: user.email,
                     name: user.name,
-                    is_admin: is_admin
+                    is_admin: user.is_admin
                 }
             };
             ctx.status = 200;
